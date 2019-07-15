@@ -1,0 +1,14 @@
+.cell{
+    height : 30px;
+    width : 30px;
+    background-color: rgb(105, 102, 102);
+    border: 1px dashed white;
+}
+
+.hit {
+    background-color: red;
+}
+
+.blank {
+    background-color: black;
+}

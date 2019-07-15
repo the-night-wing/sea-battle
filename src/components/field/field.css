@@ -1,0 +1,10 @@
+.field{
+    border: 5px solid blue;
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
