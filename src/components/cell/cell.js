@@ -3,23 +3,31 @@ import "./cell.css"
 
 export default class Cell extends Component {
     
+    static defaultProps = {
+        value : null
+    }
+
     state = {
+        value : this.props.value,
         isShip : false,
         isShot : false,
         id: 0
     }
 
     onClick = () => {
-        this.setState({
-            isShot : true
-        })
+
+        if (!this.state.value){
+            this.setState({
+                isShot : true
+            })
+        }        
     }
 
     
 
     render() {
         
-        const {isShot, isShip} = this.state;
+        const {isShot, isShip, value} = this.state;
 
         const isHit = isShip && isShot;
         const isBlank = !isShip && isShot;
@@ -27,13 +35,14 @@ export default class Cell extends Component {
         return (
             <div 
                 className = {
-                            `cell 
+                            `cell
+                            ${value ? "not-clickable" : "clickable"} 
                             ${isHit ? "hit" : null} 
                             ${isBlank ? "blank" : null}`
                             }
                 onClick = { () => this.onClick()}
             >
-                            
+            {value}          
             </div>
         )
     }

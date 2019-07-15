@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import "./field.css"
 
-export default class Field extends Component {
+export default class BattleField extends Component {
 
     render() {
 
-        const {cells, rows} = this.props;
+        const {rows} = this.props;
         
         return (
-            <div className="field">
+            <div className="battlefield">
                 {rows}
             </div>
         )

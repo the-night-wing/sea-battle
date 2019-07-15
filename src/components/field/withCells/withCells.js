@@ -14,10 +14,10 @@ const withCells = (Wrapper, amount) => {
             const cells = [];
             const rows = [];
 
-            for(let i = 0; i < 10; i++){
-                cells[i] = [];
-                for(let k = 0; k < 10; k++){
-                    cells[i][k] = <Cell/>;
+            for(let i = 0; i < 11; i++){
+                cells[i] = i === 0 ? [null] : [<Cell value={i}/>];
+                for(let k = 1; k < 11; k++){
+                    cells[i][k] = i === 0 ? <Cell value={k}/> : <Cell/>;
                 }
                 rows[i] = <div className="row">{cells[i]}</div>
             }

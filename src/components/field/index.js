@@ -1,3 +1,3 @@
-import Field from "./field.js"
+import BattleField from "./battlefield.js"
 
-export default Field
+export default BattleField

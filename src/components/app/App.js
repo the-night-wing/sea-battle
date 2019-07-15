@@ -1,17 +1,14 @@
 import React from 'react';
-import Field from "../field"
-import withCells from "../field/withCells"
 import './App.css';
 import "./reset.css";
 
-function App() {
+import GameField from "../gamefield"
 
-  const FieldWithCells = withCells(Field, 50)
+function App() {
 
   return (
     <div className="App">
-      <FieldWithCells/>
-      {/* <Field/> */}
+      <GameField/>
     </div>
   );
 }

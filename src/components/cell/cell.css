@@ -1,8 +1,18 @@
 .cell{
     height : 30px;
     width : 30px;
+}
+
+.clickable{
     background-color: rgb(105, 102, 102);
     border: 1px dashed white;
+    cursor: crosshair;
+}
+
+.not-clickable{
+    background-color: rgb(177, 167, 167);
+    border: 1px dashed rgb(56, 56, 56);
+    cursor: default
 }
 
 .hit {
