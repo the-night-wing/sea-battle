@@ -4,11 +4,11 @@ import "./gamefield.css"
 import BattleField from "../field"
 import withCells from "../field/withCells"
 
-const GameField = ({endturn, className}) => {
+const GameField = ({endturn, className, shipsData, shotsData, onCellClick}) => {
 
     
-    const PlayersBattleField = withCells(BattleField)
-    const OpponentsBattleField = withCells(BattleField)
+    const PlayersBattleField = withCells(BattleField, shipsData, onCellClick)
+    const OpponentsBattleField = withCells(BattleField, shotsData, onCellClick)
 
 
     return (

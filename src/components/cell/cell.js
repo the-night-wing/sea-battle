@@ -4,33 +4,33 @@ import "./cell.css"
 export default class Cell extends Component {
     
     static defaultProps = {
-        value : null
+        value : null,
+        cellData : {
+            isShip : false,
+            isShot : false,
+            player : -1,
+            id : -1
+        }
     }
 
     state = {
         value : this.props.value,
-        isShip : false,
-        isShot : false,
-        id: 0
+        isShip : this.props.cellData["isShip"],
+        isShot : this.props.cellData["isShot"],
+        player : this.props.cellData["player"],
+        id: this.props.cellData["id"]
     }
 
-    onClick = () => {
-
-        if (!this.state.value){
-            this.setState({
-                isShot : true
-            },
-            () => console.log(this.state.isShot)
-            )
-        }        
-    }
+    
 
     
 
     render() {
         
-        const {isShot, isShip, value} = this.state;
-
+        const {isShot, isShip, value, id, player} = this.state;
+        console.log(this.props);
+        console.log(`player in Cell : ${player}`);
+        console.log(`id in Cell : ${id}`);
         const isHit = isShip && isShot;
         const isBlank = !isShip && isShot;
 
@@ -42,7 +42,7 @@ export default class Cell extends Component {
                             ${isHit ? "hit" : null} 
                             ${isBlank ? "blank" : null}`
                             }
-                onClick = { () => this.onClick()}
+                onClick = { value ? () => {} : () => this.props.onClick(id, isShip, player)}
             >
             {value}          
             </div>
