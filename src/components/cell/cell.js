@@ -19,7 +19,9 @@ export default class Cell extends Component {
         if (!this.state.value){
             this.setState({
                 isShot : true
-            })
+            },
+            () => console.log(this.state.isShot)
+            )
         }        
     }
 

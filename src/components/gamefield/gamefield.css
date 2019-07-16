@@ -1,6 +1,24 @@
 .gamefield{
     display: flex;
     flex-direction: row;
-    justify-content: space-around
-    
+    justify-content: space-around;
+    align-items: center;
+}
+
+.endturn{
+    height: 30px;
+    width: 90px;
+}
+
+.show{
+    display: flex;
+}
+
+.hide{
+    display: none;
+}
+
+h1{
+    font-size: 25px;
+    font-weight: bold;
 }

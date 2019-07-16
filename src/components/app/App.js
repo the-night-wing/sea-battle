@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
 import "./reset.css";
+// import "../../helpers/bootstrap.css"
 
-import GameField from "../gamefield"
+import Game from "../game"
 
 function App() {
 
   return (
     <div className="App">
-      <GameField/>
+      <Game/>
     </div>
   );
 }
