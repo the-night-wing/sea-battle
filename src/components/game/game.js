@@ -16,7 +16,15 @@ export default class Game extends Component {
         player1shots : "1",
         player2ships : "1",
         player2shots : "1",
-        varToChange : false
+        varToChange : 1
+    }
+
+    plusOne = () => {
+        this.setState((state) => {
+            return({
+                varToChange : state.varToChange + 1
+            })
+        })
     }
 
     endTurn = () => {
@@ -150,6 +158,25 @@ export default class Game extends Component {
          
             console.log("You pressed on the player's 2 field");
             
+            const { player2shots : oldShots } = this.state;
+
+            const newCell = update(oldShots[firstIndex][secondIndex], {
+                isShot : {$set : true}
+            })
+
+
+            const newRow = update(oldShots[firstIndex], {
+                $splice : [[secondIndex, 1, newCell]]
+            })
+
+            const newMatrix = update(oldShots, {
+                $splice : [[firstIndex, 1, newRow]]
+            })
+
+            this.setState({
+                player2shots : newMatrix
+            })
+
             // const { player2shots : oldShots } = this.state;
 
             // const newShots = [...oldShots];
@@ -240,7 +267,7 @@ export default class Game extends Component {
                         />  
                     }
                 </div>
-                {/* <div className={`${isOpponentsTurn ? "show" : "hide"}`}>
+                <div className={`${isOpponentsTurn ? "show" : "hide"}`}>
                     {
                         <GameField
                             label={"Player 2"}
@@ -250,8 +277,8 @@ export default class Game extends Component {
                             onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
                         />
                     }
-                </div> */}
-                {/* <Checking/> */}
+                </div>
+                <Checking counter={this.state.varToChange} plusOne={() => this.plusOne}/>
             </div>
         )
     }
