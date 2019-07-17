@@ -3,11 +3,23 @@ import "./gamefield.css"
 
 import Cell from "../cell"
 
+import _ from "lodash"
+
+// const f = [{"x": 4}, {"Z" : "hush"}]
+// const fraka = [{"x": 4}, {"Z" : "hush"}]
+// console.log('Checking arrays');
+// console.log(_(f).differenceWith(fraka, _.isEqual).isEmpty());
+
 export default class GameField extends Component {
 
     state = {
         cells : [],
         rows : [],
+        shipsData : [],
+        shotsData : [],
+        PlayersBattleField : null,
+        OpponentsBattleField : null
+
         
     }
 
@@ -15,8 +27,9 @@ export default class GameField extends Component {
 
         const {onCellClick} = this.props;
 
-        const f = [5, false]
-        f.splice()
+        // const f = [{"x": 4}, {"Z" : "hush"}]
+        // const fraka = [{"x": 4}, {"Z" : "hush"}]
+        // console.log(_(f).differenceWith(fraka, _.isEqual).isEmpty());
         // console.log(f.1);
         // console.log(cellsData);
 
@@ -52,11 +65,57 @@ export default class GameField extends Component {
         )
     }
 
+    updateBattleField = () => {
+
+        const {shipsData, shotsData} = this.props; 
+
+        const PlayersBattleField = this.fillWithCells(shipsData);
+        const OpponentsBattleField = this.fillWithCells(shotsData);
+
+        this.setState({
+            PlayersBattleField,
+            OpponentsBattleField
+        })
+
+    }
+
     componentDidMount() {
+        this.updateBattleField()
+    }
+
+    componentDidUpdate(prevProps){
+
+        
+        // const f = [{"x": 4}, {"Z" : "hush"}]
+        // const fraka = [{"x": 4}, {"Z" : "hush"}]
+        console.log(`props`);
+        console.log(this.props);
+        console.log(`prevProps`);
+        console.log(prevProps);
+        console.log('Checking arrays');
+        const areShipsEqual = _(this.props.shipsData).differenceWith(prevProps.shipsData, _.isEqual).isEmpty()
+        console.log(areShipsEqual);
+        const areShotsEqual = _(this.props.shotsData).differenceWith(prevProps.shotsData, _.isEqual).isEmpty()
+        console.log(areShotsEqual);
+
+        if ( !(areShipsEqual && areShotsEqual) ){
+            console.log(`updatin BattleField`);
+            // this.updateBattleField()
+            this.setState({
+                shipsData : this.props.shipsData,
+                shotsData : this.props.shotsData
+            }, () => {
+                console.log('State after update')
+                console.log(this.state.shipsData);
+                console.log(this.state.shotsData);
+            })
+        }
     }
 
     render() {
-        const {endturn, shipsData, shotsData, label} = this.props; 
+        const { endturn, label } = this.props; 
+        // const { PlayersBattleField, OpponentsBattleField } = this.state;
+        const { shipsData, shotsData } = this.state;
 
         const PlayersBattleField = this.fillWithCells(shipsData);
         const OpponentsBattleField = this.fillWithCells(shotsData);

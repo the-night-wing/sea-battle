@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import "./game.css"
+import Checking from "../checking/checking.js"
 
 import update from "immutability-helper"
 
 import GameField from "../gamefield"
+import _ from "lodash"
 
 export default class Game extends Component {
     
@@ -93,6 +95,11 @@ export default class Game extends Component {
 
         console.log(id);
         console.log(player);
+
+        const f = [{"x": 4}, {"Z" : "hush"}]
+        const fraka = [{"x": 4}, {"Z" : "hush"}]
+        console.log('Checking arrays');
+        console.log(_(f).differenceWith(fraka, _.isEqual).isEmpty());
 
         const firstIndex = parseInt( String(id).substr(0, 1) );
         const secondIndex = parseInt( String(id).substr(1, 2) );
@@ -233,7 +240,7 @@ export default class Game extends Component {
                         />  
                     }
                 </div>
-                <div className={`${isOpponentsTurn ? "show" : "hide"}`}>
+                {/* <div className={`${isOpponentsTurn ? "show" : "hide"}`}>
                     {
                         <GameField
                             label={"Player 2"}
@@ -243,8 +250,8 @@ export default class Game extends Component {
                             onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
                         />
                     }
-                </div>
-                
+                </div> */}
+                {/* <Checking/> */}
             </div>
         )
     }
