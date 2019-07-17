@@ -12,10 +12,26 @@
 
 .show{
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .hide{
     display: none;
+}
+
+.battlefield{
+    border: 5px solid blue;
+    /* display: flex;
+    flex-direction: column; */
+    display: inline-block;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 h1{

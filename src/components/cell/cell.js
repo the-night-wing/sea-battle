@@ -21,16 +21,23 @@ export default class Cell extends Component {
         id: this.props.cellData["id"]
     }
 
-    
+    checkData = () => {
+
+        const { isShip, isShot, player } = this.state;
+
+        console.log(` Is Ship ? ${isShip}`);
+        console.log(` Is Shot ? ${isShot}`);
+        console.log(` Which player ? ${[player]}`);
+    }
 
     
 
     render() {
         
         const {isShot, isShip, value, id, player} = this.state;
-        console.log(this.props);
-        console.log(`player in Cell : ${player}`);
-        console.log(`id in Cell : ${id}`);
+        // console.log(this.props);
+        // console.log(`player in Cell : ${player}`);
+        // console.log(`id in Cell : ${id}`);
         const isHit = isShip && isShot;
         const isBlank = !isShip && isShot;
 
@@ -42,7 +49,17 @@ export default class Cell extends Component {
                             ${isHit ? "hit" : null} 
                             ${isBlank ? "blank" : null}`
                             }
-                onClick = { value ? () => {} : () => this.props.onClick(id, isShip, player)}
+                onClick = { 
+                            value 
+                            ? 
+                            () => {} 
+                            : 
+                            () => { 
+                                    this.props.onClick(id, isShip, player);
+                                    this.checkData()
+
+                                }
+                        }
             >
             {value}          
             </div>
