@@ -5,13 +5,11 @@ import Checking from "../checking/checking.js"
 import update from "immutability-helper"
 
 import GameField from "../gamefield"
-import _ from "lodash"
 
 export default class Game extends Component {
     
     state = {
         isYourTurn : true,
-        isOpponentsTurn : false,
         player1ships : "1",
         player1shots : "1",
         player2ships : "1",
@@ -32,15 +30,8 @@ export default class Game extends Component {
             
             return({
                 isYourTurn : !state.isYourTurn,
-                isOpponentsTurn : !state.isOpponentsTurn
             })
-        }, () => {
-            console.log(this.state.isYourTurn)  
-            // console.log(this.state.player1ships);
-            // console.log(this.state.player1shots);
-            // console.log(this.state.player2ships);
-            // console.log(this.state.player2shots);
-        } )
+        })
     }
 
     generateCellsData = () => {
@@ -82,18 +73,11 @@ export default class Game extends Component {
             }
         }
         
-        
- 
         this.setState({
             player1ships,
             player1shots,
             player2ships,
             player2shots
-        }, () => {
-            console.log(this.state.player1ships);
-            console.log(this.state.player1shots);
-            console.log(this.state.player2ships);
-            console.log(this.state.player2shots);
         })
     }
 
@@ -104,19 +88,10 @@ export default class Game extends Component {
         console.log(id);
         console.log(player);
 
-        const f = [{"x": 4}, {"Z" : "hush"}]
-        const fraka = [{"x": 4}, {"Z" : "hush"}]
-        console.log('Checking arrays');
-        console.log(_(f).differenceWith(fraka, _.isEqual).isEmpty());
-
         const firstIndex = parseInt( String(id).substr(0, 1) );
         const secondIndex = parseInt( String(id).substr(1, 2) );
         
-        console.log(`first : ${firstIndex} second : ${secondIndex}`)
-        
-        // this.setState({
-        //     varToChange : "varToChange"
-        // }, console.log(this.state.varToChange))
+        // console.log(`first : ${firstIndex} second : ${secondIndex}`)
 
         if ( !(player - 1) && !isShip ) {
          
@@ -141,17 +116,9 @@ export default class Game extends Component {
             console.log(`newRow : ${newRow}`);
             console.log(`newMatrix : ${newMatrix}`);
 
-            // const newShots = [...oldShots];
-            // newShots[firstIndex][secondIndex]["isShot"] = true
-
             this.setState({
                 player1shots : newMatrix
-            }, () => {
-                console.log("AFTER YOU FUNCKING CLICKEDQ(*@$&^$*Q#&%$(Q*$^&*($&*$");
-                console.log(this.state.player1shots);
-                this.forceUpdate()
-                // callbackfunc()
-            } )
+            })
         }
 
         if ( (player - 1) && !isShip){
@@ -189,66 +156,56 @@ export default class Game extends Component {
     }
 
     componentDidMount(){
-        // this.generateCellsData()
-        const player1ships = [],
-              player1shots = [],
-              player2ships = [],
-              player2shots = [];
+        this.generateCellsData()
+        // const player1ships = [],
+        //       player1shots = [],
+        //       player2ships = [],
+        //       player2shots = [];
 
-        for(let i = 0; i < 10; i++){
-            player1ships[i] = [];
-            player1shots[i] = [];
-            player2ships[i] = [];
-            player2shots[i] = [];
-            for(let k = 0; k < 10; k++){
-                player1ships[i][k] = {
-                    isShip : false,
-                    isShot : false,
-                    player : 1,
-                    id: `${i}${k}`
-                }
-                player1shots[i][k] = {
-                    isShip : false,
-                    isShot : false,
-                    player : 1,
-                    id: `${i}${k}`
-                }
-                player2ships[i][k] = {
-                    isShip : false,
-                    isShot : false,
-                    player : 2,
-                    id: `${i}${k}`
-                }
-                player2shots[i][k] = {
-                    isShip : false,
-                    isShot : false,
-                    player : 2,
-                    id: `${i}${k}`
-                }
-            }
-        }
-        
-        console.log(`RECREATED~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
- 
-        this.setState({
-            player1ships,
-            player1shots,
-            player2ships,
-            player2shots
-        }, () => {
-            console.log(`GAVNO IZ PISKI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-            console.log(this.state.player1ships);
-            console.log(this.state.player1shots);
-            console.log(this.state.player2ships);
-            console.log(this.state.player2shots);
-        })
+        // for(let i = 0; i < 10; i++){
+        //     player1ships[i] = [];
+        //     player1shots[i] = [];
+        //     player2ships[i] = [];
+        //     player2shots[i] = [];
+        //     for(let k = 0; k < 10; k++){
+        //         player1ships[i][k] = {
+        //             isShip : false,
+        //             isShot : false,
+        //             player : 1,
+        //             id: `${i}${k}`
+        //         }
+        //         player1shots[i][k] = {
+        //             isShip : false,
+        //             isShot : false,
+        //             player : 1,
+        //             id: `${i}${k}`
+        //         }
+        //         player2ships[i][k] = {
+        //             isShip : false,
+        //             isShot : false,
+        //             player : 2,
+        //             id: `${i}${k}`
+        //         }
+        //         player2shots[i][k] = {
+        //             isShip : false,
+        //             isShot : false,
+        //             player : 2,
+        //             id: `${i}${k}`
+        //         }
+        //     }
+        // }
+        // this.setState({
+        //     player1ships,
+        //     player1shots,
+        //     player2ships,
+        //     player2shots
+        // })
     }
 
     
     render() {
 
         const { isYourTurn,
-                isOpponentsTurn,
                 player1ships,
                 player1shots,
                 player2ships,
@@ -256,28 +213,25 @@ export default class Game extends Component {
 
         return (
             <div className="game">
-                <div className={`${isYourTurn ? "show" : "hide"}`}>
-                    {
-                        <GameField
-                            label={"Player 1"}
-                            endturn={() => this.endTurn()}
-                            shipsData = { player1ships}
-                            shotsData = { player1shots}
-                            onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
-                        />  
-                    }
-                </div>
-                <div className={`${isOpponentsTurn ? "show" : "hide"}`}>
-                    {
-                        <GameField
-                            label={"Player 2"}
-                            endturn={() => this.endTurn()}
-                            shipsData = { player2ships }
-                            shotsData = { player2shots }
-                            onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
-                        />
-                    }
-                </div>
+                    
+                    <GameField
+                        // className={`${isYourTurn ? "show" : "hide"}`}
+                        label={"Player 1"}
+                        endturn={() => this.endTurn()}
+                        shipsData = { isYourTurn ? player1ships : player2ships }
+                        shotsData = { isYourTurn ? player1shots : player2shots}
+                        onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
+                    />  
+                
+                    {/* <GameField
+                        className={`${!isYourTurn ? "show" : "hide"}`}
+                        label={"Player 2"}
+                        endturn={() => this.endTurn()}
+                        shipsData = { player2ships }
+                        shotsData = { player2shots }
+                        onCellClick = {(id, isShip, player) => this.onClick(id, isShip, player)}
+                    /> */}
+                    
                 <Checking counter={this.state.varToChange} plusOne={() => this.plusOne}/>
             </div>
         )
