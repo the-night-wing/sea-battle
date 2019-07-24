@@ -1,6 +1,7 @@
 .cell{
     height : 30px;
     width : 30px;
+    position: relative;
 }
 
 .clickable{
@@ -21,4 +22,8 @@
 
 .blank {
     background-color: black;
+}
+
+.ship{
+    background-color: green;
 }

@@ -1,0 +1,19 @@
+.drag-container{
+    border: 2px solid black;
+    margin: 15px auto;
+    display: flex;
+    justify-content: space-between
+}
+
+.done,
+.wip {
+    border: 3px solid rgb(114, 116, 148);
+    width: 300px;
+    margin: 15px;
+}
+
+.draggable{
+    margin: 10px;
+    height: 50px;
+    line-height: 50px;
+}
