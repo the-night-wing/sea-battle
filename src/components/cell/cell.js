@@ -13,7 +13,7 @@ import { onHover } from "../checking/checking.js";
 // };
 
 const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
-  console.log(`${onHovering};;;;; value : ${value}`);
+  // console.log(`${onHovering};;;;; value : ${value}`);
 
   // static defaultProps = {
   //     value : null,
@@ -62,7 +62,11 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.LINKOR,
     // canDrop: () => onHovering(id, player),
-    canDrop: () => onHover(id),
+    canDrop: () => {
+      // onHovering(id, player);
+      onHover(id);
+      return true;
+    },
     drop: () => placeShip(id, player),
     collect: monitor => ({
       isOver: monitor.isOver(),
@@ -88,7 +92,7 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
     >
       {value}
       {/* {isOver && <Overlay color="yellow" />} */}
-      {!value && canDrop && <Overlay color="green" />}
+      {!value && couldDrop && <Overlay color="green" />}
     </div>
   );
   // }

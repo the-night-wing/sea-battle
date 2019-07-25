@@ -12,11 +12,14 @@ const fillWithCells = (cellsData, onCellClick, onHovering, placeShip) => {
     const rows = [];
 
     for (let i = 0; i < 11; i++) {
-      cells[i] = i === 0 ? [null] : [<Cell value={i} />];
+      cells[i] =
+        i === 0
+          ? [null]
+          : [<Cell value={i} onHovering={() => false} placeShip={() => {}} />];
       for (let k = 1; k < 11; k++) {
         cells[i][k] =
           i === 0 ? (
-            <Cell value={k} />
+            <Cell value={k} onHovering={() => false} placeShip={() => {}} />
           ) : (
             <Cell
               cellData={cellsData[i - 1][k - 1]}
@@ -29,7 +32,7 @@ const fillWithCells = (cellsData, onCellClick, onHovering, placeShip) => {
       rows[i] = <div className="row">{cells[i]}</div>;
     }
     return <div className="battlefield">{rows}</div>;
-  } else return <h1>ZALUPA</h1>;
+  } else return <h1>ZHOPA</h1>;
 };
 
 const GameField = ({

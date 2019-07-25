@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { useDrag } from 'react-dnd';
 import update from "immutability-helper"
+import produce from "immer"
 
 import "./game.css"
 
@@ -96,45 +97,8 @@ export default class Game extends Component {
         // return true
 
         const [firstIndex, secondIndex] = this.parseId(id);
+        console.log(`firstIndex : ${firstIndex}, secondIndex : ${secondIndex}`)
 
-        if(firstIndex < 5) return true
-
-        // const {player1ships, player2ships} = this.state;
-
-        // const shipCells = [];
-
-        // if( !(player - 1) ){
-
-        //     const oldShots = player1ships;
-
-        //     if ( typeof player1ships[firstIndex][secondIndex + 3 ] !== "undefined" ){
-        //         for(let i = 0; i < 4; i++ ){
-        //             shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
-        //                 canDrop : {$set : true}
-        //             })
-        //         }
-
-        //         const newRow = update(oldShots[firstIndex], {
-        //             $splice : [[secondIndex, 4, ...shipCells]]
-        //         })
-
-        //         const newMatrix = update(oldShots, {
-        //             $splice : [[firstIndex, 1, newRow]]
-        //         })
-
-        //         this.setState({
-        //             player1ships : newMatrix
-        //         })
-        //     }
-        // }
-
-    }
-
-    placeShip = (id, player) => {
-        
-        console.log("Trying to place")
-
-        const [firstIndex, secondIndex] = this.parseId(id);
 
         const {player1ships, player2ships} = this.state;
 
@@ -144,11 +108,10 @@ export default class Game extends Component {
 
             const oldShots = player1ships;
 
-
             if ( typeof player1ships[firstIndex][secondIndex + 3 ] !== "undefined" ){
                 for(let i = 0; i < 4; i++ ){
                     shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
-                        isShip : {$set : true}
+                        canDrop : {$set : true}
                     })
                 }
 
@@ -164,6 +127,70 @@ export default class Game extends Component {
                     player1ships : newMatrix
                 })
             }
+
+            
+        }
+
+    }
+
+    placeShip = (id, player) => {
+        
+        console.log("Trying to place")
+
+        const [firstIndex, secondIndex] = this.parseId(id);
+
+        const {player1ships, player2ships} = this.state;
+
+        // const shipCells = [];
+
+        if( !(player - 1) ){
+
+            // const oldShots = player1ships;
+
+
+            if ( typeof player1ships[firstIndex][secondIndex + 3 ] !== "undefined" ){
+                // for(let i = 0; i < 4; i++ ){
+                //     shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
+                //         isShip : {$set : true}
+                //     })
+                // }
+
+                // const newRow = update(oldShots[firstIndex], {
+                //     $splice : [[secondIndex, 4, ...shipCells]]
+                // })
+
+                // const newMatrix = update(oldShots, {
+                //     $splice : [[firstIndex, 1, newRow]]
+                // })
+
+                // this.setState({
+                //     player1ships : newMatrix
+                // })
+
+                
+
+                // const nextState = produce(this.state, draftState => {
+                //     for( let i = 0; i < 4; i++){
+                //         draftState.player1ships[firstIndex][secondIndex + i].isShip = true;
+                //     }
+                //     console.log(draftState)
+                // })
+                // this.setState({
+                //     player1ships : nextState
+                // })
+
+                this.setState(
+                    produce(draft => {
+                        for( let i = 0; i < 4; i++){
+                            draft.player1ships[firstIndex][secondIndex + i].isShip = true;
+                        }
+                    })
+                )
+
+
+            }
+
+
         }
 
     }
@@ -293,7 +320,7 @@ const Linkor = () => {
     }
 
     for(let i = 0; i < 4; i++){
-        ship[i] = <Cell value cellData={cellData} />
+        ship[i] = <Cell value cellData={cellData} onHovering={() => false} placeShip={() => {}} />
     }
 
     return(
