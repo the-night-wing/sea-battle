@@ -64,7 +64,7 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
     // canDrop: () => onHovering(id, player),
     canDrop: () => {
       // onHovering(id, player);
-      onHover(id);
+      // onHover(id);
       return true;
     },
     drop: () => placeShip(id, player),

@@ -57,28 +57,28 @@ export default class Game extends Component {
                     isShot : false,
                     canDrop : false,
                     player : 1,
-                    id: `${i}${k}`
+                    id: `${i}-${k}`
                 }
                 player1shots[i][k] = {
                     isShip : false,
                     isShot : false,
                     canDrop : false,
                     player : 1,
-                    id: `${i}${k}`
+                    id: `${i}-${k}`
                 }
                 player2ships[i][k] = {
                     isShip : false,
                     isShot : false,
                     canDrop : false,
                     player : 2,
-                    id: `${i}${k}`
+                    id: `${i}-${k}`
                 }
                 player2shots[i][k] = {
                     isShip : false,
                     isShot : false,
                     canDrop : false,
                     player : 2,
-                    id: `${i}${k}`
+                    id: `${i}-${k}`
                 }
             }
         }
@@ -97,35 +97,44 @@ export default class Game extends Component {
         // return true
 
         const [firstIndex, secondIndex] = this.parseId(id);
-        console.log(`firstIndex : ${firstIndex}, secondIndex : ${secondIndex}`)
+        // console.log(`firstIndex : ${firstIndex}, secondIndex : ${secondIndex}`)
 
 
         const {player1ships, player2ships} = this.state;
 
-        const shipCells = [];
+        // const shipCells = [];
 
         if( !(player - 1) ){
 
-            const oldShots = player1ships;
+            // const oldShots = player1ships;
 
             if ( typeof player1ships[firstIndex][secondIndex + 3 ] !== "undefined" ){
-                for(let i = 0; i < 4; i++ ){
-                    shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
-                        canDrop : {$set : true}
+                // for(let i = 0; i < 4; i++ ){
+                //     shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
+                //         canDrop : {$set : true}
+                //     })
+                // }
+
+                // const newRow = update(oldShots[firstIndex], {
+                //     $splice : [[secondIndex, 4, ...shipCells]]
+                // })
+
+                // const newMatrix = update(oldShots, {
+                //     $splice : [[firstIndex, 1, newRow]]
+                // })
+
+                // this.setState({
+                //     player1ships : newMatrix
+                // })
+
+                this.setState(
+                    produce(draft => {
+                        for( let i = 0; i < 4; i++){
+                            draft.player1ships[firstIndex][secondIndex + i].canDrop = true;
+                        }
                     })
-                }
+                )
 
-                const newRow = update(oldShots[firstIndex], {
-                    $splice : [[secondIndex, 4, ...shipCells]]
-                })
-
-                const newMatrix = update(oldShots, {
-                    $splice : [[firstIndex, 1, newRow]]
-                })
-
-                this.setState({
-                    player1ships : newMatrix
-                })
             }
 
             
@@ -145,9 +154,8 @@ export default class Game extends Component {
 
         if( !(player - 1) ){
 
+
             // const oldShots = player1ships;
-
-
             if ( typeof player1ships[firstIndex][secondIndex + 3 ] !== "undefined" ){
                 // for(let i = 0; i < 4; i++ ){
                 //     shipCells[i] = update(oldShots[firstIndex][secondIndex + i], {
@@ -178,7 +186,6 @@ export default class Game extends Component {
                 // this.setState({
                 //     player1ships : nextState
                 // })
-
                 this.setState(
                     produce(draft => {
                         for( let i = 0; i < 4; i++){
@@ -197,10 +204,11 @@ export default class Game extends Component {
 
     parseId = (id) => {
         
-        const firstIndex = parseInt( String(id).substr(0, 1) );
-        const secondIndex = parseInt( String(id).substr(1, 2) );
-
-        return [firstIndex, secondIndex]
+        // const firstIndex = parseInt( String(id).substr(0, 1) );
+        // const secondIndex = parseInt( String(id).substr(1, 2) );
+        // const id = "5-5"
+        const [firstIndex, secondIndex] = id.split("-")
+        return [Number(firstIndex), Number(secondIndex)]
     }
 
     // onClick = () => {}

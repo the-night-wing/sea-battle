@@ -83,7 +83,7 @@ export default class Checking extends Component {
 }
 
 const onHover = id => {
-  console.log(id);
+  // console.log(id);
   if (id < 55) return true;
 };
 
