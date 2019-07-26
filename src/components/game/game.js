@@ -96,6 +96,25 @@ export default class Game extends Component {
     return shipLength;
   };
 
+  checkSurroundingCells = (x, y, m) => {
+
+    const X = 0, Y = 1;
+    const vectors = [ [-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1] ]
+
+    for ( let i = 0; i < vectors.length; i++){
+        let vector = vectors[i];
+        if (m[x + vector[X]] !== undefined) {
+            if (m[x + vector[X]][y + vector[Y]] !== undefined) {
+                if (m[x + vector[X]][y + vector[Y]].isShip === true){
+                    return true
+                }
+            }
+        }
+    }
+    return false
+
+  }
+
   canDropShip = (id, player, shipType) => {
     const [firstIndex, secondIndex] = this.parseId(id);
     const shipLength = this.parseShipLength(shipType);
@@ -103,36 +122,26 @@ export default class Game extends Component {
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
-      console.log(`Checking  ${10 - shipLength}`);
 
       if (secondIndex <= 10 - shipLength) {
-        console.log(`Checking deeper ${secondIndex}`);
         for (let i = 0; i < shipLength; i++) {
           if (player1ships[firstIndex][secondIndex + i].isShip === true) {
             console.log(player1ships[firstIndex][secondIndex + i].isShip);
             return false;
           }
         }
+        
+        for (let i = 0; i < shipLength; i++) {
+            if (this.checkSurroundingCells(firstIndex, (secondIndex + i), player1ships) ){
+                return false
+            }
+        }
         return true
       }
       else {
           return false
       }
-
-    //   return true;
     }
-
-    // if (!(player - 1)) {
-    //   if (typeof player1ships[firstIndex][secondIndex + 3] !== "undefined") {
-    //     this.setState(
-    //       produce(draft => {
-    //         for (let i = 0; i < 4; i++) {
-    //           draft.player1ships[firstIndex][secondIndex + i].canDrop = true;
-    //         }
-    //       })
-    //     );
-    //   }
-    // }
   };
 
   placeShip = (id, player) => {
@@ -143,7 +152,7 @@ export default class Game extends Component {
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
-      if (typeof player1ships[firstIndex][secondIndex + 3] !== "undefined") {
+      if (player1ships[firstIndex][secondIndex + 3] !== undefined) {
         this.setState(
           produce(draft => {
             for (let i = 0; i < 4; i++) {
