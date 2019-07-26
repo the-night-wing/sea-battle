@@ -91,7 +91,7 @@ export default class Game extends Component {
   parseShipLength = shipType => {
     console.log(shipType);
 
-    const shipLength = shipType.substr(shipType.indexOf("-"), 1);
+    const shipLength = Number(shipType.substr(shipType.indexOf("-") + 1, 1));
 
     return shipLength;
   };
@@ -103,19 +103,36 @@ export default class Game extends Component {
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
+      console.log(`Checking  ${10 - shipLength}`);
+
+      if (secondIndex <= 10 - shipLength) {
+        console.log(`Checking deeper ${secondIndex}`);
+        for (let i = 0; i < shipLength; i++) {
+          if (player1ships[firstIndex][secondIndex + i].isShip === true) {
+            console.log(player1ships[firstIndex][secondIndex + i].isShip);
+            return false;
+          }
+        }
+        return true
+      }
+      else {
+          return false
+      }
+
+    //   return true;
     }
 
-    if (!(player - 1)) {
-      if (typeof player1ships[firstIndex][secondIndex + 3] !== "undefined") {
-        this.setState(
-          produce(draft => {
-            for (let i = 0; i < 4; i++) {
-              draft.player1ships[firstIndex][secondIndex + i].canDrop = true;
-            }
-          })
-        );
-      }
-    }
+    // if (!(player - 1)) {
+    //   if (typeof player1ships[firstIndex][secondIndex + 3] !== "undefined") {
+    //     this.setState(
+    //       produce(draft => {
+    //         for (let i = 0; i < 4; i++) {
+    //           draft.player1ships[firstIndex][secondIndex + i].canDrop = true;
+    //         }
+    //       })
+    //     );
+    //   }
+    // }
   };
 
   placeShip = (id, player) => {
@@ -126,7 +143,7 @@ export default class Game extends Component {
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
-      if (player1ships[firstIndex][secondIndex + 3] !== "undefined") {
+      if (typeof player1ships[firstIndex][secondIndex + 3] !== "undefined") {
         this.setState(
           produce(draft => {
             for (let i = 0; i < 4; i++) {
@@ -201,7 +218,9 @@ export default class Game extends Component {
           shipsData={isYourTurn ? player1ships : player2ships}
           shotsData={isYourTurn ? player1shots : player2shots}
           onCellClick={(id, isShip, player) => this.onClick(id, isShip, player)}
-          onHovering={(id, player) => this.canDropShip(id, player)}
+          onHovering={(id, player, shipType) =>
+            this.canDropShip(id, player, shipType)
+          }
           placeShip={(id, player) => this.placeShip(id, player)}
         />
 

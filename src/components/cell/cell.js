@@ -14,7 +14,8 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.LINKOR,
     canDrop: () => {
-      return true;
+      
+      return onHovering(id, player, ItemTypes.LINKOR);
     },
     drop: () => placeShip(id, player),
     collect: monitor => ({
@@ -40,8 +41,9 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
       }
     >
       {value}
+      {/* {canDrop && <Overlay color="yellow" />} */}
       {/* {isOver && <Overlay color="yellow" />} */}
-      {!value && couldDrop && <Overlay color="green" />}
+      {/* {!value && couldDrop && <Overlay color="green" />} */}
     </div>
   );
 };
