@@ -5,66 +5,15 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from "../constants.js";
 import { onHover } from "../checking/checking.js";
 
-// export default class Cell extends Component {
-
-// const onHover = id => {
-//   console.log("HOvering");
-//   if (id < 55) return true;
-// };
-
 const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
-  // console.log(`${onHovering};;;;; value : ${value}`);
-
-  // static defaultProps = {
-  //     value : null,
-  //     cellData : {
-  //         isShip : false,
-  //         isShot : false,
-  //         player : -1,
-  //         id : -1
-  //     }
-  // }
-
-  // state = {
-  //     value : this.props.value,
-  //     isShip : this.props.cellData["isShip"],
-  //     isShot : this.props.cellData["isShot"],
-  //     player : this.props.cellData["player"],
-  //     id: this.props.cellData["id"]
-  // }
-
-  // checkData = () => {
-
-  //     const { isShip, isShot, player } = this.state;
-
-  //     console.log(` Is Ship ? ${isShip}`);
-  //     console.log(` Is Shot ? ${isShot}`);
-  //     console.log(` Which player ? ${[player]}`);
-
-  // }
-
-  // componentDidUpdate(prevProps){
-  //     if( this.props.cellData !== prevProps.cellData){
-
-  //     }
-  // }
-
-  // render() {
-
-  // const {isShot, isShip, value, id, player} = this.state;
   const { isShot, isShip, canDrop: couldDrop, id, player } = cellData;
-  // console.log(this.props);
-  // console.log(`player in Cell : ${player}`);
-  // console.log(`id in Cell : ${id}`);
+
   const isHit = isShip && isShot;
   const isBlank = !isShip && isShot;
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.LINKOR,
-    // canDrop: () => onHovering(id, player),
     canDrop: () => {
-      // onHovering(id, player);
-      // onHover(id);
       return true;
     },
     drop: () => placeShip(id, player),
@@ -95,7 +44,6 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
       {!value && couldDrop && <Overlay color="green" />}
     </div>
   );
-  // }
 };
 
 Cell.defaultProps = {
@@ -105,10 +53,10 @@ Cell.defaultProps = {
     isShot: false,
     couldDrop: false,
     player: -1,
-    id: -1,
-    onHovering: () => false,
-    placeShip: () => {}
-  }
+    id: -1
+  },
+  onHovering: () => false,
+  placeShip: () => {}
 };
 
 const Overlay = ({ color }) => {

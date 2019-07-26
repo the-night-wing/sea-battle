@@ -1,3 +1,3 @@
 export const ItemTypes = {
-    LINKOR : "linkor"
-}
+  LINKOR: "linkor-4"
+};

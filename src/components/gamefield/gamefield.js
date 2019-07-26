@@ -5,21 +5,16 @@ import "./gamefield.css";
 import Cell from "../cell";
 
 const fillWithCells = (cellsData, onCellClick, onHovering, placeShip) => {
-  //   console.log(onHovering);
-
   if (cellsData.length > 1) {
     const cells = [];
     const rows = [];
 
     for (let i = 0; i < 11; i++) {
-      cells[i] =
-        i === 0
-          ? [null]
-          : [<Cell value={i} onHovering={() => false} placeShip={() => {}} />];
+      cells[i] = i === 0 ? [null] : [<Cell value={i} />];
       for (let k = 1; k < 11; k++) {
         cells[i][k] =
           i === 0 ? (
-            <Cell value={k} onHovering={() => false} placeShip={() => {}} />
+            <Cell value={k} />
           ) : (
             <Cell
               cellData={cellsData[i - 1][k - 1]}
