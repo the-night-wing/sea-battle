@@ -1,26 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import "./cell.css";
 
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "../constants.js";
-import { onHover } from "../checking/checking.js";
+
+import { parseId, parseShipLength } from "../../helpers/index.js";
 
 const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
-  const { isShot, isShip, canDrop: couldDrop, id, player } = cellData;
+  const { isShot, isShip, id, player } = cellData;
 
   const isHit = isShip && isShot;
   const isBlank = !isShip && isShot;
 
-  const [{ isOver, canDrop }, drop] = useDrop({
-    accept: ItemTypes.LINKOR,
+  const [{ isOver, canDrop, coord, itemType }, drop] = useDrop({
+    accept: [ItemTypes.LINKOR, ItemTypes.BOAT],
     canDrop: () => {
-      
       return onHovering(id, player, ItemTypes.LINKOR);
     },
     drop: () => placeShip(id, player),
     collect: monitor => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
+      canDrop: monitor.canDrop(),
+      coord: monitor.getInitialClientOffset(),
+      itemType: monitor.getItemType()
     })
   });
 
@@ -41,9 +43,13 @@ const Cell = ({ onClick, value, cellData, onHovering, placeShip }) => {
       }
     >
       {value}
-      {/* {canDrop && <Overlay color="yellow" />} */}
-      {/* {isOver && <Overlay color="yellow" />} */}
-      {/* {!value && couldDrop && <Overlay color="green" />} */}
+      {!value && isOver && (
+        <Overlay
+          color={`${canDrop ? "orange" : "red"}`}
+          coord={parseId(id)}
+          shipLength={parseShipLength(itemType)}
+        />
+      )}
     </div>
   );
 };
@@ -61,15 +67,21 @@ Cell.defaultProps = {
   placeShip: () => {}
 };
 
-const Overlay = ({ color }) => {
+const Overlay = ({ color, coord, shipLength }) => {
+  const [y, x] = coord;
+
+  console.log(coord);
+  console.log(shipLength);
+
+  const displacement = 10 - x - shipLength;
+
   const squareHoverStyles = {
     opacity: 0.5,
     position: "absolute",
     top: 0,
-    left: 0,
+    left: displacement < 0 ? displacement * 30 : 0,
     backgroundColor: color,
-    // width: "120px",
-    width: "100%",
+    width: `${30 * shipLength}px`,
     height: "100%",
     zIndex: 1
   };
