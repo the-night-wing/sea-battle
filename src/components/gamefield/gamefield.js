@@ -4,7 +4,7 @@ import "./gamefield.css";
 
 import Cell from "../cell";
 
-const fillWithCells = (cellsData, onCellClick, onHovering, placeShip) => {
+const fillWithCells = (cellsData, onCellClick, canDropShip, placeShip) => {
   if (cellsData.length > 1) {
     const cells = [];
     const rows = [];
@@ -19,7 +19,7 @@ const fillWithCells = (cellsData, onCellClick, onHovering, placeShip) => {
             <Cell
               cellData={cellsData[i - 1][k - 1]}
               onClick={onCellClick}
-              onHovering={onHovering}
+              canDropShip={canDropShip}
               placeShip={placeShip}
             />
           );
@@ -37,19 +37,19 @@ const GameField = ({
   label,
   onCellClick,
   className,
-  onHovering,
+  canDropShip,
   placeShip
 }) => {
   const PlayersBattleField = fillWithCells(
     shipsData,
     onCellClick,
-    onHovering,
+    canDropShip,
     placeShip
   );
   const OpponentsBattleField = fillWithCells(
     shotsData,
     onCellClick,
-    onHovering,
+    canDropShip,
     placeShip
   );
 

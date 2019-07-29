@@ -100,7 +100,6 @@ export default class Game extends Component {
       if (secondIndex <= 10 - shipLength) {
         for (let i = 0; i < shipLength; i++) {
           if (player1ships[firstIndex][secondIndex + i].isShip === true) {
-            // console.log(player1ships[firstIndex][secondIndex + i].isShip);
             return false;
           }
         }
@@ -203,7 +202,7 @@ export default class Game extends Component {
           shipsData={isYourTurn ? player1ships : player2ships}
           shotsData={isYourTurn ? player1shots : player2shots}
           onCellClick={(id, isShip, player) => this.onClick(id, isShip, player)}
-          onHovering={(id, player, shipType) =>
+          canDropShip={(id, player, shipType) =>
             this.canDropShip(id, player, shipType)
           }
           placeShip={(id, player) => this.placeShip(id, player)}
@@ -243,8 +242,6 @@ const Linkor = () => {
       <Cell
         value
         cellData={cellData}
-        onHovering={() => false}
-        placeShip={() => {}}
       />
     );
   }
