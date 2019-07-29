@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 
-import { useDrag, DragPreviewImage } from "react-dnd";
 import produce from "immer";
 
 import "./game.css";
 
 import GameField from "../gamefield";
-import Cell from "../cell";
 import Checking from "../checking/checking.js";
+import { Battleship, Cruiser, Destroyer, PatrolBoat } from "../ships"
 
-import {parseShipLength, parseId, checkSurroundingCells} from "../../helpers"
+import { parseShipLength, parseId, checkSurroundingCells } from "../../helpers";
 
-import { ItemTypes } from "../constants.js";
 
 export default class Game extends Component {
   state = {
@@ -86,10 +84,6 @@ export default class Game extends Component {
     });
   };
 
-  
-
-  
-
   canDropShip = (id, player, shipType) => {
     const [firstIndex, secondIndex] = parseId(id);
     const shipLength = parseShipLength(shipType);
@@ -97,7 +91,7 @@ export default class Game extends Component {
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
-      if (secondIndex <= 10 - shipLength) {
+      if (secondIndex <= player1ships[firstIndex].length - shipLength) {
         for (let i = 0; i < shipLength; i++) {
           if (player1ships[firstIndex][secondIndex + i].isShip === true) {
             return false;
@@ -106,34 +100,62 @@ export default class Game extends Component {
 
         for (let i = 0; i < shipLength; i++) {
           if (
-            checkSurroundingCells(
-              firstIndex,
-              secondIndex + i,
-              player1ships
-            )
+            checkSurroundingCells(firstIndex, secondIndex + i, player1ships)
           ) {
             return false;
           }
         }
         return true;
       } else {
-        return false;
+        const displacement = 10 - secondIndex - shipLength;
+        for (let i = displacement; i < shipLength + displacement; i++) {
+          if (player1ships[firstIndex][secondIndex + i].isShip === true) {
+            return false;
+          }
+        }
+
+        for (let i = displacement; i < shipLength + displacement; i++) {
+          if (
+            checkSurroundingCells(firstIndex, secondIndex + i, player1ships)
+          ) {
+            return false;
+          }
+        }
+        return true;
       }
     }
   };
 
-  placeShip = (id, player) => {
-    console.log("Trying to place");
-
+  placeShip = (id, player, shipType) => {
     const [firstIndex, secondIndex] = parseId(id);
+    const shipLength = parseShipLength(shipType);
 
     const { player1ships, player2ships } = this.state;
 
     if (!(player - 1)) {
-      if (player1ships[firstIndex][secondIndex + 3] !== undefined) {
+      console.log(
+        secondIndex,
+        player1ships[firstIndex].length,
+        shipLength,
+        shipType
+      );
+      // if (player1ships[firstIndex][secondIndex + (shipLength - 1)] !== undefined) {
+      if (secondIndex <= player1ships[firstIndex].length - shipLength) {
+        console.log("Trying to place deeper");
         this.setState(
           produce(draft => {
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < shipLength; i++) {
+              draft.player1ships[firstIndex][secondIndex + i].isShip = true;
+            }
+          })
+        );
+      } else {
+        console.log("Trying to place in proh");
+        this.setState(
+          produce(draft => {
+            const displacement = 10 - secondIndex - shipLength;
+            console.log(displacement)
+            for (let i = displacement; i < shipLength + displacement; i++) {
               draft.player1ships[firstIndex][secondIndex + i].isShip = true;
             }
           })
@@ -141,8 +163,6 @@ export default class Game extends Component {
       }
     }
   };
-
-  
 
   onClick = (id, isShip, player) => {
     console.log(id);
@@ -205,54 +225,21 @@ export default class Game extends Component {
           canDropShip={(id, player, shipType) =>
             this.canDropShip(id, player, shipType)
           }
-          placeShip={(id, player) => this.placeShip(id, player)}
+          placeShip={(id, player, shipType) => this.placeShip(id, player, shipType)}
         />
 
         {/* <Checking counter={this.state.varToChange} plusOne={() => this.plusOne}/> */}
 
         <div style={fortStyles}>
           <h4>Place your ships</h4>
-          <Linkor />
+          <Battleship />
+          <Cruiser />
+          <Destroyer />
+          <PatrolBoat />
         </div>
       </div>
     );
   }
 }
 
-const Linkor = () => {
-  const [{ isDragging }, drag, preview] = useDrag({
-    item: { type: ItemTypes.LINKOR },
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging()
-    })
-  });
-
-  // const linkorImage = "http://127.0.0.1:8080/Linkor.png";
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
-  const ship = [];
-  const cellData = {
-    isShip: true,
-    isShot: false,
-    player: -1,
-    id: -1
-  };
-
-  for (let i = 0; i < 4; i++) {
-    ship[i] = (
-      <Cell
-        value
-        cellData={cellData}
-      />
-    );
-  }
-
-  return (
-    <>
-      {/* <DragPreviewImage connect={preview} src={linkorImage} /> */}
-      <div style={{ display: "flex", flexDirection: "row" }} ref={drag}>
-        {ship}
-      </div>
-    </>
-  );
-};
 

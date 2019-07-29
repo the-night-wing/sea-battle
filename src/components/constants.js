@@ -1,4 +1,6 @@
 export const ItemTypes = {
-  LINKOR: "linkor-4",
-  BOAT: "boat-1"
+  BATTLESHIP: "battleship-4",
+  CRUISER: "cruiser-3",
+  DESTROYER: "destroyer-2",
+  PATROL_BOAT: "patrul_boat-1"
 };

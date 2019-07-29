@@ -41,7 +41,12 @@ export default Overlay;
 
 const OverlayToHide = ({ color, shipLength }) => {
   const [{ isOver }, drop] = useDrop({
-    accept: [ItemTypes.LINKOR, ItemTypes.BOAT],
+    accept: [
+      ItemTypes.BATTLESHIP,
+      ItemTypes.CRUISER,
+      ItemTypes.DESTROYER,
+      ItemTypes.PATROL_BOAT
+    ],
     collect: monitor => ({
       isOver: monitor.isOver()
     })
@@ -58,7 +63,5 @@ const OverlayToHide = ({ color, shipLength }) => {
     zIndex: 10
   };
 
-  return !isOver ? (
-    <div ref={drop} style={squareHoverStyles} />
-  ) : null;
+  return !isOver ? <div ref={drop} style={squareHoverStyles} /> : null;
 };

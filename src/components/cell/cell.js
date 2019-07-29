@@ -16,9 +16,14 @@ const Cell = ({ onClick, value, cellData, canDropShip, placeShip }) => {
   const isBlank = !isShip && isShot;
 
   const [{ isOver, canDrop, coord, itemType }, drop] = useDrop({
-    accept: [ItemTypes.LINKOR, ItemTypes.BOAT],
-    canDrop: () => canDropShip(id, player, ItemTypes.LINKOR),
-    drop: () => placeShip(id, player),
+    accept: [
+      ItemTypes.BATTLESHIP,
+      ItemTypes.CRUISER,
+      ItemTypes.DESTROYER,
+      ItemTypes.PATROL_BOAT
+    ],
+    canDrop: () => canDropShip(id, player, itemType),
+    drop: () => placeShip(id, player, itemType),
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
