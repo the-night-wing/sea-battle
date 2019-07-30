@@ -89,18 +89,20 @@ export default class Game extends Component {
     const shipLength = parseShipLength(shipType);
 
     const { player1ships, player2ships } = this.state;
+    
+    const oldShips = !(player - 1) ? player1ships : player2ships
 
-    if (!(player - 1)) {
-      if (secondIndex <= player1ships[firstIndex].length - shipLength) {
+    // if (!(player - 1)) {
+      if (secondIndex <= oldShips[firstIndex].length - shipLength) {
         for (let i = 0; i < shipLength; i++) {
-          if (player1ships[firstIndex][secondIndex + i].isShip === true) {
+          if (oldShips[firstIndex][secondIndex + i].isShip === true) {
             return false;
           }
         }
 
         for (let i = 0; i < shipLength; i++) {
           if (
-            checkSurroundingCells(firstIndex, secondIndex + i, player1ships)
+            checkSurroundingCells(firstIndex, secondIndex + i, oldShips)
           ) {
             return false;
           }
@@ -109,21 +111,21 @@ export default class Game extends Component {
       } else {
         const displacement = 10 - secondIndex - shipLength;
         for (let i = displacement; i < shipLength + displacement; i++) {
-          if (player1ships[firstIndex][secondIndex + i].isShip === true) {
+          if (oldShips[firstIndex][secondIndex + i].isShip === true) {
             return false;
           }
         }
 
         for (let i = displacement; i < shipLength + displacement; i++) {
           if (
-            checkSurroundingCells(firstIndex, secondIndex + i, player1ships)
+            checkSurroundingCells(firstIndex, secondIndex + i, oldShips)
           ) {
             return false;
           }
         }
         return true;
       }
-    }
+    // }
   };
 
   placeShip = (id, player, shipType) => {
@@ -132,20 +134,23 @@ export default class Game extends Component {
 
     const { player1ships, player2ships } = this.state;
 
-    if (!(player - 1)) {
-      console.log(
-        secondIndex,
-        player1ships[firstIndex].length,
-        shipLength,
-        shipType
-      );
+    const oldShips = !(player - 1) ? player1ships : player2ships,
+          shipsName = !(player - 1) ? "player1ships" : "player2ships"
+
+    // if (!(player - 1)) {
+      // console.log(
+      //   secondIndex,
+      //   player1ships[firstIndex].length,
+      //   shipLength,
+      //   shipType
+      // );
       // if (player1ships[firstIndex][secondIndex + (shipLength - 1)] !== undefined) {
-      if (secondIndex <= player1ships[firstIndex].length - shipLength) {
+      if (secondIndex <= oldShips[firstIndex].length - shipLength) {
         console.log("Trying to place deeper");
         this.setState(
           produce(draft => {
             for (let i = 0; i < shipLength; i++) {
-              draft.player1ships[firstIndex][secondIndex + i].isShip = true;
+              draft[shipsName][firstIndex][secondIndex + i].isShip = true;
             }
           })
         );
@@ -156,12 +161,12 @@ export default class Game extends Component {
             const displacement = 10 - secondIndex - shipLength;
             console.log(displacement)
             for (let i = displacement; i < shipLength + displacement; i++) {
-              draft.player1ships[firstIndex][secondIndex + i].isShip = true;
+              draft[shipsName][firstIndex][secondIndex + i].isShip = true;
             }
           })
         );
       }
-    }
+    // }
   };
 
   onClick = (id, isShip, player) => {
@@ -232,10 +237,14 @@ export default class Game extends Component {
 
         <div style={fortStyles}>
           <h4>Place your ships</h4>
-          <Battleship />
+          {/* <Battleship />
           <Cruiser />
           <Destroyer />
-          <PatrolBoat />
+          <PatrolBoat /> */}
+          {Battleship} 
+          {Cruiser }
+          {Destroyer }
+          {PatrolBoat} 
         </div>
       </div>
     );

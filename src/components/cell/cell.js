@@ -37,17 +37,10 @@ const Cell = ({ onClick, value, cellData, canDropShip, placeShip }) => {
       ref={drop}
       className={`cell
                             ${value ? "not-clickable" : "clickable"} 
-                            ${isHit ? "hit" : null} 
-                            ${isBlank ? "blank" : null}
-                            ${isShip ? "ship" : null}`}
-      onClick={
-        // value
-        //   ? () => {}
-        //   :
-        () => {
-          onClick(id, isShip, player);
-        }
-      }
+                            ${isHit ? "hit" : ""} 
+                            ${isBlank ? "blank" : ""}
+                            ${isShip ? "ship" : ""}`}
+      onClick={() => onClick(id, isShip, player)}
     >
       {value}
       {!value && isOver && (

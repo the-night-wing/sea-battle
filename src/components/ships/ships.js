@@ -23,69 +23,36 @@ const cellData = {
   id: -1
 };
 
-const Battleship = () => {
-  // const linkorImage = "http://127.0.0.1:8080/Linkor.png";
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
+const createShip = length => {
   const ship = [];
+  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < length; i++) {
     ship[i] = <Cell value cellData={cellData} />;
   }
 
+  let shipType = "";
+
+  if (length === 1) shipType = "PATROL_BOAT";
+  if (length === 2) shipType = "DESTROYER";
+  if (length === 3) shipType = "CRUISER";
+  if (length === 4) shipType = "BATTLESHIP";
+
   return (
-    <AddDrag shipType="BATTLESHIP">
-      {/* <DragPreviewImage connect={preview} src={linkorImage} /> */}
-      <div style={{ display: "flex", flexDirection: "row" }}>{ship}</div>
+    <AddDrag shipType={shipType}>
+      <div style={styles}>{ship}</div>
     </AddDrag>
   );
 };
 
-const Cruiser = () => {
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
-  const ship = [];
+const styles = { display: "flex", flexDirection: "row" };
 
-  for (let i = 0; i < 3; i++) {
-    ship[i] = <Cell value cellData={cellData} />;
-  }
+const Battleship = createShip(4);
 
-  return (
-    <AddDrag shipType="CRUISER">
-      {/* <DragPreviewImage connect={preview} src={linkorImage} /> */}
-      <div style={{ display: "flex", flexDirection: "row" }}>{ship}</div>
-    </AddDrag>
-  );
-};
+const Cruiser = createShip(3);
 
-const Destroyer = () => {
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
-  const ship = [];
+const Destroyer = createShip(2);
 
-  for (let i = 0; i < 2; i++) {
-    ship[i] = <Cell value cellData={cellData} />;
-  }
-
-  return (
-    <AddDrag shipType="DESTROYER">
-      {/* <DragPreviewImage connect={preview} src={linkorImage} /> */}
-      <div style={{ display: "flex", flexDirection: "row" }}>{ship}</div>
-    </AddDrag>
-  );
-};
-
-const PatrolBoat = () => {
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
-  const ship = [];
-
-  for (let i = 0; i < 1; i++) {
-    ship[i] = <Cell value cellData={cellData} />;
-  }
-
-  return (
-    <AddDrag shipType="PATROL_BOAT">
-      {/* <DragPreviewImage connect={preview} src={linkorImage} /> */}
-      <div style={{ display: "flex", flexDirection: "row" }}>{ship}</div>
-    </AddDrag>
-  );
-};
+const PatrolBoat = createShip(1);
 
 export { Battleship, Cruiser, Destroyer, PatrolBoat };

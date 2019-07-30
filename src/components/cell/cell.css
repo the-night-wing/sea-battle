@@ -26,4 +26,5 @@
 
 .ship{
     background-color: green;
+    cursor: move;
 }
