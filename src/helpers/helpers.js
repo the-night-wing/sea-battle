@@ -1,10 +1,16 @@
 const parseShipLength = shipType => {
-  // console.log(shipType);
-
   if (typeof shipType === "string") {
     const shipLength = Number(shipType.substr(shipType.indexOf("-") + 1, 1));
 
     return shipLength;
+  }
+};
+
+const parseShipName = shipType => {
+  if (typeof shipType === "string") {
+    const shipName = shipType.substring(0, shipType.indexOf("-"));
+
+    return shipName;
   }
 };
 
@@ -42,4 +48,4 @@ const parseId = id => {
   }
 };
 
-export { parseShipLength, parseId, checkSurroundingCells };
+export { parseShipLength, parseShipName, parseId, checkSurroundingCells };

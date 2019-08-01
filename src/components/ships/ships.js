@@ -1,5 +1,6 @@
-import React from "react";
-import { useDrag, DragPreviewImage } from "react-dnd";
+import React, { useEffect } from "react";
+import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 import { ItemTypes } from "../constants.js";
 
@@ -12,7 +13,9 @@ const AddDrag = ({ shipType, children }) => {
       isDragging: !!monitor.isDragging()
     })
   });
-
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  });
   return <div ref={drag}>{children}</div>;
 };
 
@@ -25,7 +28,6 @@ const cellData = {
 
 const createShip = length => {
   const ship = [];
-  const linkorImage = "http://127.0.0.1:8080/chess_knight.png";
 
   for (let i = 0; i < length; i++) {
     ship[i] = <Cell value cellData={cellData} />;

@@ -8,6 +8,8 @@ import GameField from "../gamefield";
 import Checking from "../checking/checking.js";
 import { Battleship, Cruiser, Destroyer, PatrolBoat } from "../ships"
 
+import CustomDragLayer from "../custom-drag-layer"
+
 import { parseShipLength, parseId, checkSurroundingCells } from "../../helpers";
 
 
@@ -220,6 +222,7 @@ export default class Game extends Component {
     };
 
     return (
+      <>
       <div className="game">
         <GameField
           label={"Player 1"}
@@ -246,7 +249,9 @@ export default class Game extends Component {
           {Destroyer }
           {PatrolBoat} 
         </div>
+      <CustomDragLayer/>
       </div>
+      </>
     );
   }
 }

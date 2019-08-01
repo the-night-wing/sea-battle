@@ -1,3 +1,8 @@
-import { parseShipLength, parseId, checkSurroundingCells } from "./helpers.js";
+import {
+  parseShipLength,
+  parseShipName,
+  parseId,
+  checkSurroundingCells
+} from "./helpers.js";
 
-export { parseShipLength, parseId, checkSurroundingCells };
+export { parseShipLength, parseShipName, parseId, checkSurroundingCells };
