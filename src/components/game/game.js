@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import produce from "immer";
 
 import "./game.css";
 
 import GameField from "../gamefield";
-import Checking from "../checking/checking.js";
+// import Checking from "../checking/checking.js";
 import { Battleship, Cruiser, Destroyer, PatrolBoat } from "../ships"
 
 import CustomDragLayer from "../custom-drag-layer"
@@ -13,7 +13,7 @@ import CustomDragLayer from "../custom-drag-layer"
 import { parseShipLength, parseId, checkSurroundingCells } from "../../helpers";
 
 
-export default class Game extends Component {
+export default class Game extends PureComponent {
   state = {
     isYourTurn: true,
     player1ships: "1",
@@ -94,10 +94,10 @@ export default class Game extends Component {
     
     const oldShips = !(player - 1) ? player1ships : player2ships
 
-    // if (!(player - 1)) {
       if (secondIndex <= oldShips[firstIndex].length - shipLength) {
         for (let i = 0; i < shipLength; i++) {
           if (oldShips[firstIndex][secondIndex + i].isShip === true) {
+            console.log(`Ship is under`);
             return false;
           }
         }
@@ -106,6 +106,7 @@ export default class Game extends Component {
           if (
             checkSurroundingCells(firstIndex, secondIndex + i, oldShips)
           ) {
+            console.log(`Ship is around`);
             return false;
           }
         }
@@ -139,14 +140,6 @@ export default class Game extends Component {
     const oldShips = !(player - 1) ? player1ships : player2ships,
           shipsName = !(player - 1) ? "player1ships" : "player2ships"
 
-    // if (!(player - 1)) {
-      // console.log(
-      //   secondIndex,
-      //   player1ships[firstIndex].length,
-      //   shipLength,
-      //   shipType
-      // );
-      // if (player1ships[firstIndex][secondIndex + (shipLength - 1)] !== undefined) {
       if (secondIndex <= oldShips[firstIndex].length - shipLength) {
         console.log("Trying to place deeper");
         this.setState(
@@ -206,6 +199,23 @@ export default class Game extends Component {
     this.generateCellsData();
   }
 
+  endTurnMemo = () => {
+    this.endTurn()
+  }
+
+  onClickMemo = (id, isShip, player) => {
+    this.onClick(id, isShip, player)
+  }
+
+  canDropShipMemo = (id, player, shipType) => {
+    return this.canDropShip(id, player, shipType)
+  }
+
+  placeShipMemo = (id, player, shipType) => {
+    this.placeShip(id, player, shipType)
+  }
+
+
   render() {
     const {
       isYourTurn,
@@ -226,24 +236,22 @@ export default class Game extends Component {
       <div className="game">
         <GameField
           label={"Player 1"}
-          endturn={() => this.endTurn()}
+          endturn={this.endTurnMemo}
           shipsData={isYourTurn ? player1ships : player2ships}
           shotsData={isYourTurn ? player1shots : player2shots}
-          onCellClick={(id, isShip, player) => this.onClick(id, isShip, player)}
-          canDropShip={(id, player, shipType) =>
-            this.canDropShip(id, player, shipType)
-          }
-          placeShip={(id, player, shipType) => this.placeShip(id, player, shipType)}
+          onCellClick={this.onClickMemo}
+          canDropShip={this.canDropShipMemo}
+          placeShip={this.placeShipMemo}
         />
 
         {/* <Checking counter={this.state.varToChange} plusOne={() => this.plusOne}/> */}
 
         <div style={fortStyles}>
           <h4>Place your ships</h4>
-          {/* <Battleship />
-          <Cruiser />
-          <Destroyer />
-          <PatrolBoat /> */}
+          {/* <Battleship /> */}
+          {/* <Cruiser /> */}
+          {/* <Destroyer /> */}
+          {/* <PatrolBoat /> */}
           {Battleship} 
           {Cruiser }
           {Destroyer }

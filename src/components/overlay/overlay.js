@@ -5,8 +5,8 @@ import { ItemTypes } from "../constants.js";
 
 import "./overlay.css";
 
-const Overlay = ({ color, coord, shipLength }) => {
-  const [y, x] = coord;
+const OverlaySlow = ({ color, coord, shipLength }) => {
+  const x = coord[1];
 
   const displacement = 10 - x - shipLength;
 
@@ -36,6 +36,8 @@ const Overlay = ({ color, coord, shipLength }) => {
     </>
   );
 };
+
+const Overlay = React.memo(OverlaySlow);
 
 export default Overlay;
 

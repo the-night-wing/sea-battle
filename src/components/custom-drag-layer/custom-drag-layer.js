@@ -15,27 +15,42 @@ const layerStyles = {
 
 const _imageBase = "http://127.0.0.1:8080/";
 
-const getItemStyles = (initialOffset, currentOffset, clientOffset) => {
+const getItemStyles = (
+  initialOffset,
+  currentOffset,
+  clientOffset,
+  itemType
+) => {
   if (!initialOffset || !currentOffset) {
     return {
       display: "none"
     };
   }
-  let { x, y } = clientOffset;
 
+  let { x, y } = clientOffset;
+  // const shipLength = parseShipLength(itemType);
+
+  // if (Math.abs(window.innerWidth - x) < 30 * shipLength + 5 + 2 * shipLength) {
+  //   return {
+  //     left: window.innerWidth - 30 * shipLength + 5 + 2 * shipLength,
+  //     top: y - 15
+  //   };
+  // }
   //   const transform = `translate(${x}px, ${y}px)`;
 
   //   return {
   //     transform,
   //     WebkitTransform: transform
   //   };
+  // console.log(`x : ${x}, y : ${y}`);
+  // console.log(`width : ${window.innerWidth}, heigth : ${window.innerHeight}`);
   return {
     left: x,
     top: y - 15
   };
 };
 
-const CustomDragLayer = () => {
+const CustomDragLayerSlow = () => {
   const {
     itemType,
     isDragging,
@@ -54,7 +69,13 @@ const CustomDragLayer = () => {
     const shipName = parseShipName(itemType);
     const shipLength = parseShipLength(itemType);
 
-    return <img src={`${_imageBase}${shipName}.png`} alt="ship_preview" />;
+    return (
+      <img
+        src={`${_imageBase}${shipName}.png`}
+        alt="ship_preview"
+        style={{ width: `${30 * shipLength}px` }}
+      />
+    );
   }
 
   if (!isDragging) {
@@ -74,5 +95,7 @@ const CustomDragLayer = () => {
     </div>
   );
 };
+
+const CustomDragLayer = React.memo(CustomDragLayerSlow);
 
 export default CustomDragLayer;

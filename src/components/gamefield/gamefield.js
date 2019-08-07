@@ -30,7 +30,9 @@ const fillWithCells = (cellsData, canDropShip, placeShip, onCellClick) => {
   } else return <h1>ZHOPA</h1>;
 };
 
-const GameField = ({
+const doNothing = () => {};
+
+const GameFieldSlow = ({
   shipsData,
   shotsData,
   endturn,
@@ -43,8 +45,8 @@ const GameField = ({
   const PlayersBattleField = fillWithCells(shipsData, canDropShip, placeShip);
   const OpponentsBattleField = fillWithCells(
     shotsData,
-    () => {},
-    () => {},
+    doNothing,
+    doNothing,
     onCellClick
   );
 
@@ -65,5 +67,7 @@ const GameField = ({
     </div>
   );
 };
+
+const GameField = React.memo(GameFieldSlow);
 
 export default GameField;

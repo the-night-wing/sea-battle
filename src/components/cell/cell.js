@@ -9,25 +9,36 @@ import { parseId, parseShipLength } from "../../helpers/index.js";
 
 import Overlay from "../overlay";
 
-const Cell = ({ onClick, value, cellData, canDropShip, placeShip }) => {
+const CellSlow = ({ onClick, value, cellData, canDropShip, placeShip }) => {
   const { isShot, isShip, id, player } = cellData;
 
   const isHit = isShip && isShot;
   const isBlank = !isShip && isShot;
 
-  const [{ isOver, canDrop, coord, itemType }, drop] = useDrop({
+  const onCellClick = () => {
+    onClick(id, isShip, player);
+  };
+
+  const placeShipMemo = () => {
+    placeShip(id, player, itemType);
+  };
+
+  const canDropShipMemo = () => {
+    return canDropShip(id, player, itemType);
+  };
+
+  const [{ isOver, canDrop, itemType }, drop] = useDrop({
     accept: [
       ItemTypes.BATTLESHIP,
       ItemTypes.CRUISER,
       ItemTypes.DESTROYER,
       ItemTypes.PATROL_BOAT
     ],
-    canDrop: () => canDropShip(id, player, itemType),
-    drop: () => placeShip(id, player, itemType),
+    canDrop: canDropShipMemo,
+    drop: placeShipMemo,
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
-      coord: monitor.getInitialClientOffset(),
       itemType: monitor.getItemType()
     })
   });
@@ -40,7 +51,7 @@ const Cell = ({ onClick, value, cellData, canDropShip, placeShip }) => {
                             ${isHit ? "hit" : ""} 
                             ${isBlank ? "blank" : ""}
                             ${isShip ? "ship" : ""}`}
-      onClick={() => onClick(id, isShip, player)}
+      onClick={onCellClick}
     >
       {value}
       {!value && isOver && (
@@ -54,8 +65,10 @@ const Cell = ({ onClick, value, cellData, canDropShip, placeShip }) => {
   );
 };
 
-Cell.defaultProps = {
-  onClick: () => {},
+const doNothing = () => {};
+
+CellSlow.defaultProps = {
+  onClick: doNothing,
   value: false,
   cellData: {
     isShip: false,
@@ -63,8 +76,10 @@ Cell.defaultProps = {
     player: -1,
     id: -1
   },
-  canDropShip: () => false,
-  placeShip: () => {}
+  canDropShip: doNothing,
+  placeShip: doNothing
 };
+
+const Cell = React.memo(CellSlow);
 
 export default Cell;
