@@ -40,11 +40,13 @@ const createShip = length => {
   if (length === 3) shipType = "CRUISER";
   if (length === 4) shipType = "BATTLESHIP";
 
-  return React.memo(
+  const customShip = (
     <AddDrag shipType={shipType}>
       <div style={styles}>{ship}</div>
     </AddDrag>
   );
+
+  return customShip;
 };
 
 const styles = { display: "flex", flexDirection: "row" };
